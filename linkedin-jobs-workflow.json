@@ -1,0 +1,70 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 9
+            }
+          ]
+        }
+      },
+      "id": "1",
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [200, 200]
+    },
+    {
+      "parameters": {
+        "command": "node",
+        "arguments": "-e \"const puppeteer = require('puppeteer');(async()=>{const browser=await puppeteer.launch({headless:true});const page=await browser.newPage();await page.goto('https://www.linkedin.com/jobs/search/?keywords=python%20developer');await page.waitForSelector('.jobs-search-results__list-item');const jobs=await page.evaluate(()=>Array.from(document.querySelectorAll('.jobs-search-results__list-item')).map(el=>({title:el.querySelector('h3')?.innerText||'',company:el.querySelector('.base-search-card__subtitle')?.innerText||'',location:el.querySelector('.job-search-card__location')?.innerText||'',link:el.querySelector('a')?.href||''})));console.log(JSON.stringify(jobs));await browser.close();})();\""
+      },
+      "id": "2",
+      "name": "Scrape LinkedIn (Puppeteer)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [400, 200]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": "YOUR_GOOGLE_SHEET_ID",
+        "range": "Sheet1!A:D",
+        "options": {},
+        "valueInputMode": "RAW",
+        "fields": "title,company,location,link"
+      },
+      "id": "3",
+      "name": "Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [650, 200]
+    }
+  ],
+  "connections": {
+    "Daily Trigger": {
+      "main": [
+        [
+          {
+            "node": "Scrape LinkedIn (Puppeteer)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scrape LinkedIn (Puppeteer)": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
