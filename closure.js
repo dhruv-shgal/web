@@ -4,11 +4,14 @@ function outer(){
             function inner(x){
                 setTimeout(function(){
                     console.log(x);
-                },i*1000);
+                },x*1000);
             }
-    }
-     inner(i);
-    }
+            inner(i);
+        }
+     
+}
+outer();
+
    
     
 
