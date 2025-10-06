@@ -9,17 +9,19 @@
 // }
 // console.log(a);
 
+function make(ms){
+    return new Promise(resolve => setTimeout(resolve , ms)); 
+}
 async function greet(){
     console.log("hello ....your name is ");
     for(let i=0;i<3;i++){
-        setTimeout(()=>{
+        await make(1000);
         if (i==2){
             console.log("Dhruv");
         }
         else{
             console.log("um....");
         }
-    },i*1000)
     }
     console.log("your age is 20");
 }
