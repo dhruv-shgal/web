@@ -1,0 +1,27 @@
+
+body{
+    background-color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin :0;
+    height: 100vh;
+    width: 100vw;
+}
+#heading{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.container{
+    background-color: black;
+    color: white;
+    height: 500px;
+    width: 500px;
+   
+    
+}
